@@ -1,8 +1,10 @@
 import {asynchandler} from "../utils/asynchandler.js";
-import {Apierror} from "../utils/error.js";
-import User from "../models/user.model.js";
-import {uploadonconudinary} from "../utils/cloudinary.js";
+import Apierror from "../utils/Apierror.js";
+import User from "../models/user.models.js";
+import uploadonconudinary from "../utils/cloudinary.js";
 import { Apiresponse } from "../utils/Apiresponse.js";
+
+
 
 
 const registerUser=asynchandler(async(req,res)=>{
@@ -26,8 +28,11 @@ const registerUser=asynchandler(async(req,res)=>{
 
     //check for imgaes
    const avatarlocalpath= req.files?.avatar[0]?.path;
-   const coverImageLocalpath= req.files?.coverImage[0]?.path;
-
+//const coverImageLocalpath= req.files?.coverImage[0]?.path;
+let coverImageLocalpath;
+if(req.files&& Array.isArray(req.files.coverImageLocalpath)&&req.files.coverImageLocalpath.length>0){
+    coverImageLocalpath=req.files.coverImageLocalpath[0].path;
+}
    if (!avatarlocalpath) {
        throw new Apierror(400,"Avatar is required")
    }
